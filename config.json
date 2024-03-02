@@ -1,4 +1,4 @@
 {
-  "prefix": "YOUR_BOT_PREFIX_HERE",
-  "invite_link": "YOUR_BOT_INVITE_LINK_HERE"
+  "prefix": "!MM",
+  "invite_link": "https://discord.com/oauth2/authorize?&client_id=1213553724241477662&scope=bot+applications.commands&permissions=17179994176"
 }

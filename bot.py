@@ -60,8 +60,11 @@ intents.message_content = True
 intents.presences = True
 """
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 
+#intents.message_content = True
+#intents.presences = True
+#intents.members = True
 """
 Uncomment this if you want to use prefix (normal) commands.
 It is recommended to use slash commands and therefore not use prefix commands.
@@ -172,8 +175,9 @@ class DiscordBot(commands.Bot):
         """
         Setup the game status task of the bot.
         """
-        statuses = ["with you!", "with Krypton!", "with humans!"]
-        await self.change_presence(activity=discord.Game(random.choice(statuses)))
+        #statuses = ["with you!", "with Krypton!", "with humans!"]
+        #await self.change_presence(activity=discord.Game(random.choice(statuses)))
+        await self.change_presence(activity=discord.Game("the Waiting game"))
 
     @status_task.before_loop
     async def before_status_task(self) -> None:
@@ -208,9 +212,29 @@ class DiscordBot(commands.Bot):
 
         :param message: The message that was sent.
         """
+
         if message.author == self.user or message.author.bot:
             return
+        self.logger.info(f"Said {message.content}")
+        author_name =str(message.author)
+        if author_name == 'INSERT_USERNAME':
+            meme_dir = 'D:\BilderD\Memes\\'
+            meme_folder = meme_dir + message.content
+            from os import listdir
+            from os.path import isfile, join
+            memes = [f for f in listdir(meme_folder) if isfile(join(meme_folder, f))]
+            print(meme_folder)
+            await self.change_presence(activity=discord.Game("with Memes"))
+            for m in memes:
+                try:
+                    await message.channel.send(file=discord.File(meme_folder+'\\'+m))
+                except:
+                    print("couldnt post " + m)
+            print("done")
+            await self.change_presence(activity=discord.Game("the Waiting game"))
+
         await self.process_commands(message)
+
 
     async def on_command_completion(self, context: Context) -> None:
         """
